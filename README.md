@@ -25,3 +25,19 @@ En esta práctica aprendí a crear una aplicación utilizando Spring boot. Prime
 También se implemento un endpoint /api/status. Un endpoint es una dirección de la aplicación a donde los clientes pueden enviar solicitudes HTTP. 
 
 Además comprendí que spring boot simplifica y facilita la creación de aplicaciones backend ya que incorpora un servidor embebido, en este proyecto, Tomcat. Debido a esto, no necesitamos instalar un servidor web externo.
+
+# Creación de Students
+
+## Students /models
+
+Se creo esta carpeta y una clase Student.java para presentar la información de estudiante dentro de la aplicación. la clase contiene variables como id, age y name. Más constructores y getters y setters. 
+
+## Students /controllers
+
+Se creo esta carpeta y una clase StudentController.java para exponer los endpoints Rest relacionado con estudiantes
+
+el Endpoint GET /students se encarga de devolver la lista de estudiantes en formato JSON
+
+el Endpoint GET /students/count se encarga de devolver la cantidad de estudiantes registrados en la lista.
+
+Con esta implementación se aprendió el uso de los controladores para recibir solicitudes HTTP y devolver respuestas en formato JSON
