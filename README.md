@@ -70,3 +70,21 @@ Ya no aparece en el get
 Captura de un delete de un producto no existente
 
 ![03-delete-noexistente](/assets/03-delete-product-noexistente.png)
+
+# 04_servicios
+
+## Captura de ProductServiceImpl.java
+
+en la captura se refleja el uso de @Service, lista de memoria, generación ID, uso del mapper
+
+![ProductServiceImpl](/assets/04-productserviceimpl.png)
+
+## Captura de ProductController.java
+
+En la captura se refleja la inyección de ProductService, los endpoints llamando al servicio y la ausencia de lógica CRUD dentro del controlador
+
+![ProductController](/assets/04-productcontroller.png)
+
+## ¿Cómo se inyecta el servicio en el controlador?
+
+El servicio se inyecta en el controlador mediante inyección de dependencias. ProductController necesita una implementación de ProductService. Pero como ProductServiceImpl está anotada con @Service, Spring crea automáticamente una instancia que proporciona al controlador. Así, el controlador recibe solamente peticiones HTTP y la lógica de negocio lo deja al servicio.

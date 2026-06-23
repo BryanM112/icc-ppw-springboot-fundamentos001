@@ -28,158 +28,93 @@ import ec.edu.ups.icc.fundamentos001.users.services.UserService;
  * En esta práctica el controlador ya no contiene la lógica del CRUD.
  * Solo recibe la petición y delega la operación al servicio.
  */
+/*
+ * Controlador REST encargado de exponer los endpoints HTTP
+ * para la gestión de usuarios.
+ *
+ * En esta práctica el controlador ya no contiene la lógica del CRUD.
+ * Solo recibe la petición y delega la operación al servicio.
+ */
 @RestController
 @RequestMapping("/users")
 public class UsersController {
 
+    private final UserService service;
 
-    private List<UserModel> users = new ArrayList<>();
-    private int currentId = 1;
+    /*
+     * Inyección de dependencias por constructor.
+     *
+     * Spring Boot busca una implementación de UserService,
+     * encuentra UserServiceImpl porque tiene @Service,
+     * crea el objeto y lo inyecta automáticamente.
+     */
+    public UsersController(UserService service) {
+        this.service = service;
+    }
 
+    /*
+     * Endpoint para listar todos los usuarios.
+     *
+     * GET /users
+     */
     @GetMapping
     public List<UserResponseDto> findAll() {
-
-        // Programación tradicional iterativa para mapear cada User a UserResponseDto
-        //List<UserResponseDto> dtos = new ArrayList<>();
-        //for (UserModel user : users) {
-        //    dtos.add(UserMapper.toResponse(user));
-        //}
-        //return dtos;
-
-        // Programación funcional para mapear cada User a UserResponseDto
-        return users.stream()
-                .map(UserMapper::toResponse)
-                .toList();
+        return service.findAll();
     }
 
-
+    /*
+     * Endpoint para buscar un usuario por id.
+     *
+     * GET /users/{id}
+     */
     @GetMapping("/{id}")
     public Object findOne(@PathVariable Long id) {
-
-      // Programación tradicional iterativa para mapear cada User a UserResponseDto
-      // Busqueda Lineal
-       // for (UserModel user : users) {
-        //    if (user.getId().equals(id)) {
-        //        return UserMapper.toResponse(user);
-        //    }
-        //}
-        //return new Object() {
-        //    public String error = "User not found";
-        //};
-
-      // Programación funcional para mapear cada User a UserResponseDto
-      // Busqueda Lineal
-    return users.stream()
-                .filter(u -> u.getId().equals(id))
-                .findFirst()
-              .map(user -> (Object) UserMapper.toResponse(user))
-            .orElseGet(() -> new Object() {
-                public String error = "User not found";
-            });
+        return service.findOne(id);
     }
 
-
-
-
+    /*
+     * Endpoint para crear un nuevo usuario.
+     *
+     * POST /users
+     */
     @PostMapping
     public UserResponseDto create(@RequestBody CreateUserDto dto) {
-
-    UserModel user = UserMapper.toModel(dto);
-
-    user.setId((long) currentId++);
-
-    users.add(user);
-
-    return UserMapper.toResponse(user);
+        return service.create(dto);
     }
 
-
- @PutMapping("/{id}")
-    public Object update(@PathVariable Long id, @RequestBody UpdateUserDto dto) {
-
-        // Programacion tradicional iterativa
-        //for (UserModel user : users) {
-        //if (user.getId().equals(id)) {
-        //user.setName(dto.getName());
-        //user.setEmail(dto.getEmail());
-        //return UserMapper.toResponse(user);
-        //}
-        //}
-        //return new Object() {
-        //public String error = "UserModel not found";
-        //};
-
-        // Programacion funcional
-        UserModel user = users.stream().filter(u -> u.getId().equals(id)).findFirst().orElse(null);
-        if (user == null)
-            return new Object() {
-                public String error = "UserModel not found";
-            };
-
-        user.setName(dto.getName());
-        user.setEmail(dto.getEmail());
-
-        return UserMapper.toResponse(user);
+    /*
+     * Endpoint para actualizar completamente un usuario.
+     *
+     * PUT /users/{id}
+     */
+    @PutMapping("/{id}")
+    public Object update(
+            @PathVariable Long id,
+            @RequestBody UpdateUserDto dto
+    ) {
+        return service.update(id, dto);
     }
 
-
-
-    
-@PatchMapping("/{id}")
-    public Object partialUpdate(@PathVariable Long id, @RequestBody PartialUpdateUserDto dto) {
-
-        // Programacion tradicional iterativa
-        //for (UserModel user : users) {
-            // ESTE ES EL CAMBIO pero deberia estar en un metodo aparte para evitar
-            // duplicacion de codigo y mejorar mantenibilidad con separacion de
-            // responsabilidades.
-        //    if (user.getId().equals(id)) {
-        //        if (dto.getName() != null)
-        //            user.setName(dto.getName());
-        //        if (dto.getEmail() != null)
-        //            user.setEmail(dto.getEmail());
-        //        return UserMapper.toResponse(user);
-        //    }
-        //}
-        //return new Object() {
-        //    public String error = "UserModel not found";
-        //};
-
-        // Programación funcional
-        // Búsqueda lineal del usuario por id
-        UserModel user = users.stream().filter(u -> u.getId().equals(id))
-                .findFirst()
-                .orElse(null);
-
-        if (user == null)
-            return new Object() {
-                public String error = "UserModel not found";
-            };
-
-        if (dto.getName() != null)
-            user.setName(dto.getName());
-        if (dto.getEmail() != null)
-            user.setEmail(dto.getEmail());
-
-        return UserMapper.toResponse(user);
+    /*
+     * Endpoint para actualizar parcialmente un usuario.
+     *
+     * PATCH /users/{id}
+     */
+    @PatchMapping("/{id}")
+    public Object partialUpdate(
+            @PathVariable Long id,
+            @RequestBody PartialUpdateUserDto dto
+    ) {
+        return service.partialUpdate(id, dto);
     }
 
-
-
-   @DeleteMapping("/{id}")
+    /*
+     * Endpoint para eliminar un usuario.
+     *
+     * DELETE /users/{id}
+     */
+    @DeleteMapping("/{id}")
     public Object delete(@PathVariable Long id) {
-        
-        // Programacion funcional
-        boolean exists = users.removeIf(u -> u.getId().equals(id));
-        if (!exists)
-            return new Object() {
-                public String error = "User not found";
-            };
-
-        return new Object() {
-            public String message = "Deleted successfully";
-        };
+        return service.delete(id);
     }
-
 }
-
