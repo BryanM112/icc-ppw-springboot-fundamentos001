@@ -41,3 +41,32 @@ el Endpoint GET /students se encarga de devolver la lista de estudiantes en form
 el Endpoint GET /students/count se encarga de devolver la cantidad de estudiantes registrados en la lista.
 
 Con esta implementación se aprendió el uso de los controladores para recibir solicitudes HTTP y devolver respuestas en formato JSON
+
+# 03_api_rest
+
+## Captura Get
+
+Captura de get de 3 productos existentes.
+
+![03-get-product](/assets/03-get-product.png)
+
+## Captura Get id
+
+Captura de un get id de un producto existente.
+![03-get-product-id](/assets/03-get-product-id.png)
+
+## Captura delete
+
+Captura de un delete de un producto existente
+
+![03-delete-existente1](/assets/03-delete-product-existente1.png)
+
+Ya no aparece en el get
+
+![03-delete-existente2](/assets/03-delete-product-existente2.png)
+
+## Captura delete, no existente
+
+Captura de un delete de un producto no existente
+
+![03-delete-noexistente](/assets/03-delete-product-noexistente.png)
