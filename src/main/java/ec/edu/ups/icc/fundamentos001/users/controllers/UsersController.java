@@ -1,6 +1,5 @@
 package ec.edu.ups.icc.fundamentos001.users.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,8 +16,6 @@ import ec.edu.ups.icc.fundamentos001.users.dtos.CreateUserDto;
 import ec.edu.ups.icc.fundamentos001.users.dtos.PartialUpdateUserDto;
 import ec.edu.ups.icc.fundamentos001.users.dtos.UpdateUserDto;
 import ec.edu.ups.icc.fundamentos001.users.dtos.UserResponseDto;
-import ec.edu.ups.icc.fundamentos001.users.mappers.UserMapper;
-import ec.edu.ups.icc.fundamentos001.users.models.UserModel;
 import ec.edu.ups.icc.fundamentos001.users.services.UserService;
 
 /*
@@ -68,7 +65,7 @@ public class UsersController {
      * GET /users/{id}
      */
     @GetMapping("/{id}")
-    public Object findOne(@PathVariable Long id) {
+    public UserResponseDto findOne(@PathVariable Long id) {
         return service.findOne(id);
     }
 
@@ -88,7 +85,7 @@ public class UsersController {
      * PUT /users/{id}
      */
     @PutMapping("/{id}")
-    public Object update(
+    public UserResponseDto update(
             @PathVariable Long id,
             @RequestBody UpdateUserDto dto
     ) {
@@ -101,7 +98,7 @@ public class UsersController {
      * PATCH /users/{id}
      */
     @PatchMapping("/{id}")
-    public Object partialUpdate(
+    public UserResponseDto partialUpdate(
             @PathVariable Long id,
             @RequestBody PartialUpdateUserDto dto
     ) {
@@ -114,7 +111,7 @@ public class UsersController {
      * DELETE /users/{id}
      */
     @DeleteMapping("/{id}")
-    public Object delete(@PathVariable Long id) {
-        return service.delete(id);
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
     }
 }

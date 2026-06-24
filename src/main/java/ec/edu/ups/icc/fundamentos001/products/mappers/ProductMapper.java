@@ -4,31 +4,58 @@ import java.time.LocalDateTime;
 
 import ec.edu.ups.icc.fundamentos001.products.dtos.CreateProductDto;
 import ec.edu.ups.icc.fundamentos001.products.dtos.ProductResponseDto;
+import ec.edu.ups.icc.fundamentos001.products.entities.ProductEntity;
 import ec.edu.ups.icc.fundamentos001.products.models.ProductModel;
 
-
 public class ProductMapper {
-    public static ProductModel toModel(CreateProductDto dto) {
 
-        ProductModel product = new ProductModel();
+    public static ProductModel toModelFromDTO(CreateProductDto dto) {
 
-        product.setName(dto.getName());
-        product.setPrice(dto.getPrice());
-        product.setStock(dto.getStock());
-        product.setCreatedAt(LocalDateTime.now());
+        ProductModel model = new ProductModel();
 
-        return product;
+        model.setName(dto.getName());
+        model.setPrice(dto.getPrice());
+        model.setStock(dto.getStock());
+        model.setCreatedAt(LocalDateTime.now());
+
+        return model;
     }
 
-    public static ProductResponseDto toResponse(ProductModel product) {
+    public static ProductModel toModelFromEntity(ProductEntity entity) {
 
-        ProductResponseDto response =
-                new ProductResponseDto();
+        ProductModel model = new ProductModel();
 
-        response.setId(product.getId());
-        response.setName(product.getName());
-        response.setPrice(product.getPrice());
-        response.setStock(product.getStock());
+        model.setId(entity.getId());
+        model.setName(entity.getName());
+        model.setPrice(entity.getPrice());
+        model.setStock(entity.getStock());
+        model.setCreatedAt(entity.getCreatedAt());
+        model.setUpdatedAt(entity.getUpdatedAt());
+        model.setDeleted(entity.isDeleted());
+
+        return model;
+    }
+
+    public static ProductEntity toEntityFromModel(ProductModel model) {
+
+        ProductEntity entity = new ProductEntity();
+
+        entity.setId(model.getId());
+        entity.setName(model.getName());
+        entity.setPrice(model.getPrice());
+        entity.setStock(model.getStock());
+
+        return entity;
+    }
+
+    public static ProductResponseDto toResponse(ProductModel model) {
+
+        ProductResponseDto response = new ProductResponseDto();
+
+        response.setId(model.getId());
+        response.setName(model.getName());
+        response.setPrice(model.getPrice());
+        response.setStock(model.getStock());
 
         return response;
     }

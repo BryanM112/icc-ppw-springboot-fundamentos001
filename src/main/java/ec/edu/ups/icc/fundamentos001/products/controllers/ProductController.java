@@ -1,6 +1,5 @@
 package ec.edu.ups.icc.fundamentos001.products.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,8 +16,6 @@ import ec.edu.ups.icc.fundamentos001.products.dtos.CreateProductDto;
 import ec.edu.ups.icc.fundamentos001.products.dtos.PartialUpdateProductDto;
 import ec.edu.ups.icc.fundamentos001.products.dtos.ProductResponseDto;
 import ec.edu.ups.icc.fundamentos001.products.dtos.UpdateProductDto;
-import ec.edu.ups.icc.fundamentos001.products.mappers.ProductMapper;
-import ec.edu.ups.icc.fundamentos001.products.models.ProductModel;
 import ec.edu.ups.icc.fundamentos001.products.services.ProductService;
 
 
@@ -39,7 +36,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Object findOne(@PathVariable Long id) {
+    public ProductResponseDto findOne(@PathVariable Long id) {
         return service.findOne(id);
     }
 
@@ -49,7 +46,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public Object update(
+    public ProductResponseDto update(
             @PathVariable Long id,
             @RequestBody UpdateProductDto dto
     ) {
@@ -57,7 +54,7 @@ public class ProductController {
     }
 
     @PatchMapping("/{id}")
-    public Object partialUpdate(
+    public ProductResponseDto partialUpdate(
             @PathVariable Long id,
             @RequestBody PartialUpdateProductDto dto
     ) {
@@ -65,7 +62,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public Object delete(@PathVariable Long id) {
-        return service.delete(id);
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
     }
 }

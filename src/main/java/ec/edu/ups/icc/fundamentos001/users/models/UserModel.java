@@ -2,7 +2,7 @@ package ec.edu.ups.icc.fundamentos001.users.models;
 
 import java.time.LocalDateTime;
 
-/**
+/*
  * Modelo de dominio del recurso users.
  *
  * Representa al usuario dentro de la lógica de negocio.
@@ -10,44 +10,37 @@ import java.time.LocalDateTime;
  */
 public class UserModel {
 
-    /**
-     * Identificador del usuario.
-     */
     private Long id;
 
-    
     private String name;
 
-    
     private String email;
-
 
     private LocalDateTime createdAt;
 
-
-    /**
-     * Contraseña recibida desde la API.
-     *
-     * Se usa temporalmente antes de generar el passwordHash.
-     */
     private String password;
 
-    /**
-     * Contraseña encriptada.
-     *
-     * Es el valor que posteriormente puede guardarse en la entidad.
-     */
     private String passwordHash;
+
+
+
+    private LocalDateTime updatedAt;
+
+    private boolean deleted;
 
     public UserModel() {
     }
 
-    public UserModel(Long id, String name, String email, String password, String passwordHash) {
+    public UserModel(Long id, String name, String email, LocalDateTime createdAt, String password, String passwordHash,
+            LocalDateTime updatedAt, boolean deleted) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.createdAt = createdAt;
         this.password = password;
         this.passwordHash = passwordHash;
+        this.updatedAt = updatedAt;
+        this.deleted = deleted;
     }
 
     public Long getId() {
@@ -97,5 +90,27 @@ public class UserModel {
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
     }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    // Constructor vacío
     
+
+    // Constructor lleno
+
+    // Getters y setters
 }

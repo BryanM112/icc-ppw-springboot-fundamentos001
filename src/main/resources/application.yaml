@@ -4,5 +4,11 @@ server:
     context-path: /api
 
 spring:
-  application:
-    name: fundamentos001
+  datasource:
+    url: jdbc:postgresql://localhost:5432/devdb
+    username: ups
+    password: ups123
+
+  jpa:
+    hibernate:
+      ddl-auto: update

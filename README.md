@@ -88,3 +88,43 @@ En la captura se refleja la inyección de ProductService, los endpoints llamando
 ## ¿Cómo se inyecta el servicio en el controlador?
 
 El servicio se inyecta en el controlador mediante inyección de dependencias. ProductController necesita una implementación de ProductService. Pero como ProductServiceImpl está anotada con @Service, Spring crea automáticamente una instancia que proporciona al controlador. Así, el controlador recibe solamente peticiones HTTP y la lógica de negocio lo deja al servicio.
+
+# 05_repositorios_persistencia
+
+## Captura de 5 productos creados en PostSQL
+
+![Captura de 5 productos](/assets/05-5productos.png)
+
+## Explicación del flujo de datos desde la API REST hasta PostgreSQL y viceversa
+
+El proyecto se estructura en capas y cada una separa responsabilidades de cada componente. El flujo de datos, cuando un cliente realiza una petición HTTP a la API REST es la siguiente:
+
+Primero va al Controller, recibe la solicitud HTTP y entrega la operación al servicio correspondiente.
+
+Segundo va al Servicio, contiene la lógica del negocio. Es decir, procesas la información recibida y realiza las operaciones necesarias.
+
+Tercero va al Mapper, Convierte los datos entre DTOs, modelos y entidades para que la capa de presentación y persistencia se encuentren separadas. 
+
+Cuarto va al repository, Aquí se utiliza Spring DATA JPA que interactua con PostgreSQL. Esto nos evita la necesidad de escribir consultas básicas.
+
+Quinto y último va a PostgreSQL. Se almacena de manera permanente la información en las tablas correspondientes.
+
+Para el sentido inverso es similar:
+
+Primero, en PostgreSQL se almacenan los registros de manera permanente.
+
+Segundo, en Repository, consulta la base de datos utilizando Spring DATA JPA y consigue las entidades adecuadas.
+
+Tercero, en service, recibe las entidades y coordina la lógica de negocio necesaria.
+
+Cuarto, Mapper transforma las entidades en modelos y después en DTOs. Su objetivo es evitar exponer información interna de la aplicación.
+
+Quinto, Controller recibe los DTOs, entonces devuelve al cliente en formato JSON mediante el API REST.
+
+Sexto, el cliente recibe la respuesta y muestra los datos que se han solicitado.
+
+Para evitar generar código innecesario y repetitivo. Las entidades, tanto UserEntity como ProductEntity heredan de BaseEntity atributos comúnes en todas las tablas como el id, createAt, updateAt, deleted.
+
+También, BaseEntity utiliza @PrePersist y @PreUpdate para actualizar de forma automática las fechas de creación y modificación cuando una entidad se modifica o se almacena en PostgreSQL.
+
+La herencia BaseEntity nos evita la duplicación de código, además de que las entidades comparten la estructura básica.
