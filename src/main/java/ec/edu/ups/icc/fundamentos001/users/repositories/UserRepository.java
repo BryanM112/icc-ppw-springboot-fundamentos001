@@ -1,5 +1,6 @@
 package ec.edu.ups.icc.fundamentos001.users.repositories;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,4 +16,9 @@ import ec.edu.ups.icc.fundamentos001.users.entities.UserEntity;
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     Optional<UserEntity> findByEmail(String email);
+    Optional<UserEntity> findByIdAndDeletedFalse(long id);
+    Optional<UserEntity> findByIdAndDeleted(Long id, boolean deleted);
+    Optional<UserEntity> findByNameAndId(String name, Long id);
+    boolean existsByIdAndDeletedFalse(Long id);
+    List<UserEntity> findByDeletedFalse();
 }

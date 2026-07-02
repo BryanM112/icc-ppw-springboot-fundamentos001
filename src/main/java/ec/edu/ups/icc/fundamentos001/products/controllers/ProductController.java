@@ -18,6 +18,8 @@ import ec.edu.ups.icc.fundamentos001.products.dtos.ProductResponseDto;
 import ec.edu.ups.icc.fundamentos001.products.dtos.UpdateProductDto;
 import ec.edu.ups.icc.fundamentos001.products.services.ProductService;
 
+import jakarta.validation.Valid;
+
 
 
 @RestController
@@ -41,14 +43,14 @@ public class ProductController {
     }
 
     @PostMapping
-    public ProductResponseDto create(@RequestBody CreateProductDto dto) {
+    public ProductResponseDto create(@Valid @RequestBody CreateProductDto dto) {
         return service.create(dto);
     }
 
     @PutMapping("/{id}")
     public ProductResponseDto update(
             @PathVariable Long id,
-            @RequestBody UpdateProductDto dto
+            @Valid @RequestBody UpdateProductDto dto
     ) {
         return service.update(id, dto);
     }
@@ -56,7 +58,7 @@ public class ProductController {
     @PatchMapping("/{id}")
     public ProductResponseDto partialUpdate(
             @PathVariable Long id,
-            @RequestBody PartialUpdateProductDto dto
+            @Valid @RequestBody PartialUpdateProductDto dto
     ) {
         return service.partialUpdate(id, dto);
     }
@@ -64,5 +66,28 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         service.delete(id);
+    }
+
+
+        // Otros endpoints ...
+
+     /*
+     * Endpoint para buscar productos por id de usuario.
+     *
+     * GET /products/user/{userId}
+     */
+    @GetMapping("/user/{userId}")
+    public List<ProductResponseDto> findByUserId(@PathVariable Long userId) {
+        return service.findByUserId(userId);
+    }
+
+    /*
+     * Endpoint para buscar productos por id de categoría.
+     *
+     * GET /products/category/{categoryId}
+     */
+    @GetMapping("/category/{categoryId}")
+    public List<ProductResponseDto> findByCategoryId(@PathVariable Long categoryId) {
+        return service.findByCategoryId(categoryId);
     }
 }

@@ -128,3 +128,25 @@ Para evitar generar código innecesario y repetitivo. Las entidades, tanto UserE
 También, BaseEntity utiliza @PrePersist y @PreUpdate para actualizar de forma automática las fechas de creación y modificación cuando una entidad se modifica o se almacena en PostgreSQL.
 
 La herencia BaseEntity nos evita la duplicación de código, además de que las entidades comparten la estructura básica.
+
+# 06_modelos_dtos_validacion
+
+## Captura de respuesta de error al enviar un POST inválido
+
+![post inválido](/assets/06-error-postinvalido.png)
+
+## Captura de CRUD de productos validado correctamente
+
+error al crear el producto con precio negativo
+
+![precio negativo](/assets/06-producto-precio-negativo.png)
+
+error al actualizar producto eliminado
+
+![error al actualizr producto eliminado](/assets/06-error-actualizar-producto-eliminado.png)
+
+findAll no devuelve productos eliminados. Se creo un producto con id 8, luego se procedió borrarlo, podemos obvservar que no se visualiza el producto 8 después de eliminarlo
+
+![eliminar producto 8](/assets/06-producto-eliminar.png)
+
+![findall no devuelve productos eliminados](/assets/06-get-producto-eliminado.png)
