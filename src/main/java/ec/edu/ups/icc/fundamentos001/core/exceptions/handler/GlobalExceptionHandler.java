@@ -1,5 +1,6 @@
 package ec.edu.ups.icc.fundamentos001.core.exceptions.handler;
 
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.validation.BindException;
+import org.springframework.security.access.AccessDeniedException;
 
 import ec.edu.ups.icc.fundamentos001.core.exceptions.base.ApplicationException;
 import ec.edu.ups.icc.fundamentos001.core.exceptions.response.ErrorResponse;
@@ -72,4 +75,61 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(response);
     }
+
+
+    /*
+ * Maneja errores de validación en query params
+ * recibidos mediante @ModelAttribute.
+ */
+@ExceptionHandler(BindException.class)
+public ResponseEntity<ErrorResponse> handleBindException(
+        BindException ex,
+        HttpServletRequest request
+) {
+    Map<String, String> errors = new HashMap<>();
+
+    ex.getBindingResult()
+            .getFieldErrors()
+            .forEach(error ->
+                    errors.put(error.getField(), error.getDefaultMessage())
+            );
+
+    ErrorResponse response = new ErrorResponse(
+            HttpStatus.BAD_REQUEST,
+            "Parámetros de consulta inválidos",
+            request.getRequestURI(),
+            errors
+    );
+
+    return ResponseEntity
+            .badRequest()
+            .body(response);
+}
+
+
+
+@ExceptionHandler(AccessDeniedException.class)
+public ResponseEntity<ErrorResponse> handleAccessDeniedException(
+        AccessDeniedException ex,
+        HttpServletRequest request
+) {
+
+    String message = ex.getMessage();
+
+    if (message == null || message.isBlank()) {
+        message = "Acceso denegado";
+    }
+
+    ErrorResponse response = new ErrorResponse(
+            HttpStatus.FORBIDDEN,
+            message,
+            request.getRequestURI()
+    );
+
+    return ResponseEntity
+            .status(HttpStatus.FORBIDDEN)
+            .body(response);
+}
+
+
 }

@@ -150,3 +150,79 @@ findAll no devuelve productos eliminados. Se creo un producto con id 8, luego se
 ![eliminar producto 8](/assets/06-producto-eliminar.png)
 
 ![findall no devuelve productos eliminados](/assets/06-get-producto-eliminado.png)
+
+# 08_relacion_entidades
+
+## Capturas
+
+Captura de la descripción de tabla products en PostgreSQL
+
+![Descripcion tabla productos](/assets/08-estructura-productos.png)
+
+Captura de la creación de un producto en bruno
+
+![Creacion de producto con sus relaciones](/assets/08-Creacion-Productos-Bruno.png)
+
+Captura de consulta de productos por categoría
+
+![Consulta de productos por categoría](/assets/08-get-productos-categoria.png)
+
+## ¿Cómo se relaciona ProductEntity con UserEntity y CategoryEntity usando @ManyToOne y @JoinColumn?
+
+ProductEntity se relaciona con UserEntity y CategoryEntity usando @ManyToOne, es decir, que muchos productos pueden pertenecer a un solo usuario y a una misma categoría. MIentras que @JoinColumn se encarga de definir la columna de clave foránea en la tabla products usando user_id y category_id. 
+
+# 09_relacion_requestparam
+
+## Capturas
+
+Captura de consulta con filtros por usuario
+
+![Captura de consulta con filtros por usuario](/assets/09-captura-de-consulta-con-filtros-por-usuario.png)
+
+Captura de consulta con filtros por categoría
+
+![Captura de consulta con filtros por categoría](/assets/09-captura-de-consulta-con-filtro-por-categoria.png)
+
+## ¿Por qué se usa ProductService y ProductRepository para consultar productos aunque el endpoint esté dentro del contexto /users/{id}/products o /categories/{id}/products?
+
+porque el recurso principal que se está consultando es Product. Esa es la razón por la cual la lógica del negocio que se relaciona con la búsqueda, validación, y filtrado se implementa en ProductService y las consultas de base de datos en ProductRepository
+
+## ¿Qué cambió al pasar de Product N ──── 1 Category a Product N ──── N Category?
+
+Product N ----- 1 Category, significa que un producto podía pertenecer a una única categoría. Se implementó una Foreign key llamada category_id en la tabla de products
+
+Al cambiar la estructura a Product N ----- N Category, se traduce a que un producto ahora puede pertenecer a múltiples categorías y una categoría a varios productos. Se elimino el FK en la tabla de products y en su lugar se creo una tabla intermedia (product_categoires), que almacena las asosiaciones entre productos y categorías.
+
+# 10_paginación
+
+## Capturas
+
+Captura de respuesta con page
+
+![captura de respuesta con page](/assets/10-captura-de-respuesta-con-page.png)
+
+Captura de respuesta con Slice
+
+![Captura de respuesta con Slice](/assets/10-captura-de-respuesta-con-slice.png)
+
+Captura de error por paginación inválida
+
+![Captura de error por paginación inválida](/assets/10-captura-de-errpr-por-paginacion-invalida.png)
+
+Captura de endpoint de categoría paginado
+
+![Captura de endpoint de categoría paginado](/assets/10-captura-de-endpoint-de-categoria-paginado.png)
+
+Captura de endpoint de categoría paginado
+
+![Captura de endpoint de categoría paginado](/assets/10-captura-de-endpoint-de-categoria-slice.png)
+
+## ¿Cuál es la diferencia entre page y slice?
+
+La diferencia está en que Page se encarga de entregar información adicional, en esa información se encuentra la cantidad total de elementos, la cantidad total de páginas, la ubicación precisa de la página actual. Para realizar esto, page hace un count. Por lo que la consulta tardará un poco más
+
+Sin embargo, el slice no hace este count adicional, en su lugar entrega la información necesaria para determinar si existe una página anterior o siguiente. Ofrece un mejor rendimiento y su tiempo de respuesta para la consulta es más rápida.
+
+## ¿Por qué la paginación debe aplicarse en el repositorio y no después de traer todos los datos en memoria?
+
+Porque si la paginación se aplica después de traer los datos en memoria, el servidor tendría que cargar todos los registros, lo que da como resultado más consumo de memoria, aumenta el tiempo de carga y envia respuestas de mayor tamaño. Esto se traduce como peor rendimiento. Al usar el repositorio Spring Data JPA traduce automáticamente los parámetros de paginación a instrucciones SQL. En pocas palabras, la base de datos solo devuelve los registros solicitados.

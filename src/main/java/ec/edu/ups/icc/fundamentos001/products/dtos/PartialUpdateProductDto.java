@@ -1,5 +1,8 @@
 package ec.edu.ups.icc.fundamentos001.products.dtos;
 
+import java.util.Set;
+
+import ec.edu.ups.icc.fundamentos001.categories.entity.CategoryEntity;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size; 
@@ -14,20 +17,32 @@ public class PartialUpdateProductDto {
     @Min(value = 0, message = "El stock no puede ser negativo")
     private Integer stock;
 
-    private Long categoryId;
+    private Set<Long> categoryIds;
 
     public PartialUpdateProductDto() {
     }
 
+    
+
+    
+
+
+
     public PartialUpdateProductDto(
             @Size(min = 3, max = 150, message = "El nombre debe tener entre 3 y 150 caracteres") String name,
             @DecimalMin(value = "0.0", inclusive = true, message = "El precio no puede ser negativo") Double price,
-            @Min(value = 0, message = "El stock no puede ser negativo") Integer stock, Long categoryId) {
+            @Min(value = 0, message = "El stock no puede ser negativo") Integer stock, Set<Long> categoryIds) {
         this.name = name;
         this.price = price;
         this.stock = stock;
-        this.categoryId = categoryId;
+        this.categoryIds = categoryIds;
     }
+
+
+
+
+
+
 
     public String getName() {
         return name;
@@ -53,16 +68,10 @@ public class PartialUpdateProductDto {
         this.stock = stock;
     }
 
-    public Long getCategoryId() {
-        return categoryId;
+    public Set<Long> getCategoryIds() {
+        return categoryIds;
     }
-
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
+    public void setCategoryIds(Set<Long> categoryIds) {
+        this.categoryIds = categoryIds;
     }
-
-    
-
-    
-    
 }

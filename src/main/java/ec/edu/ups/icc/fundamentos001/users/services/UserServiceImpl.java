@@ -16,15 +16,7 @@ import ec.edu.ups.icc.fundamentos001.users.repositories.UserRepository;
 
 import ec.edu.ups.icc.fundamentos001.core.exceptions.domain.ConflictException;
 import ec.edu.ups.icc.fundamentos001.core.exceptions.domain.NotFoundException;
-/*
- * Implementación del servicio de usuarios.
- *
- * En esta clase se mueve la lógica que antes estaba dentro del controlador:
- * listar, buscar, crear, actualizar y eliminar usuarios.
- *
- * En esta práctica todavía no se usa repository ni base de datos.
- * Por eso se mantiene una lista en memoria dentro del servicio.
- */
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -92,6 +84,7 @@ public class UserServiceImpl implements UserService {
 
         entity.setName(dto.getName());
         entity.setEmail(dto.getEmail());
+        //entity.setPasswordHash("HASH_"+dto.getPassword());
 
         UserEntity savedEntity = userRepository.save(entity);
 

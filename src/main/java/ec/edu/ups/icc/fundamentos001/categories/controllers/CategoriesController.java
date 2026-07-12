@@ -16,6 +16,16 @@ import ec.edu.ups.icc.fundamentos001.categories.dtos.CreateCategoryDto;
 import ec.edu.ups.icc.fundamentos001.categories.dtos.UpdateCategoryDto;
 import ec.edu.ups.icc.fundamentos001.categories.services.CategoryService;
 import jakarta.validation.Valid;
+import ec.edu.ups.icc.fundamentos001.products.dtos.ProductFilterByCategoryDto;
+import ec.edu.ups.icc.fundamentos001.products.dtos.ProductFilterByUserDto;
+import ec.edu.ups.icc.fundamentos001.products.dtos.ProductResponseDto;
+import ec.edu.ups.icc.fundamentos001.products.services.ProductService;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Slice;
+
+import ec.edu.ups.icc.fundamentos001.core.dto.PaginationDto;
 
 /*
  * Controlador REST encargado de exponer los endpoints HTTP
@@ -25,10 +35,12 @@ import jakarta.validation.Valid;
 @RequestMapping("/categories")
 public class CategoriesController {
 
-    private final CategoryService service;
+    private final CategoryService service;  
+    private final ProductService productService;
 
-    public CategoriesController(CategoryService service) {
+    public CategoriesController(CategoryService service, ProductService productService) {
         this.service = service;
+        this.productService = productService;
     }
 
     @GetMapping
@@ -58,4 +70,41 @@ public class CategoriesController {
     public void delete(@PathVariable Long id) {
         service.delete(id);
     }
+
+
+    @GetMapping("/{id}/products")
+    public List<ProductResponseDto> findProductsByCategory(
+            @PathVariable Long id,
+            @Valid @ModelAttribute ProductFilterByCategoryDto filters
+    ) {
+        return productService.findByCategoryIdWithFilters(id, filters);
+    }
+
+
+    @GetMapping("/{id}/products/page")
+public Page<ProductResponseDto> findProductsByCategoryPage(
+        @PathVariable Long id,
+        @Valid @ModelAttribute ProductFilterByCategoryDto filters,
+        @Valid @ModelAttribute PaginationDto pagination
+) {
+    return productService.findByCategoryIdWithFiltersPage(
+            id,
+            filters,
+            pagination
+    );
+}
+
+
+@GetMapping("/{id}/products/slice")
+public Slice<ProductResponseDto> findProductsByCategorySlice(
+        @PathVariable Long id,
+        @Valid @ModelAttribute ProductFilterByCategoryDto filters,
+        @Valid @ModelAttribute PaginationDto pagination
+) {
+    return productService.findByCategoryIdWithFiltersSlice(
+            id,
+            filters,
+            pagination
+    );
+}
 }
