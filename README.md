@@ -227,9 +227,71 @@ Sin embargo, el slice no hace este count adicional, en su lugar entrega la infor
 
 Porque si la paginación se aplica después de traer los datos en memoria, el servidor tendría que cargar todos los registros, lo que da como resultado más consumo de memoria, aumenta el tiempo de carga y envia respuestas de mayor tamaño. Esto se traduce como peor rendimiento. Al usar el repositorio Spring Data JPA traduce automáticamente los parámetros de paginación a instrucciones SQL. En pocas palabras, la base de datos solo devuelve los registros solicitados.
 
+# 13_ownership_validacion
 
+## Capturas
 
+### Creación de producto con usuario autenticado
 
+![Creación de producto con usuario autenticado](/assets/13-creacion-de-producto-con-usuario-autenticado.png)
+
+### Bloqueo por producto ajeno
+
+![Bloque por producto ajeno](/assets/13-bloqueo-de-producto-ajeno.png)
+
+### Eliminación de producto ajeno bloqueada
+
+![Eliminacion de producto ajeno bloqueada](/assets/13-eliminacion-de-producto-ajeno-bloqueada.png)
+
+### ADMIN modificando producto ajeno
+
+![ADMIN modificando producto ajeno](/assets/13-Admini-modificando-producto-ajeno.png)
+
+## ¿Qué es ownership?
+
+Es la relación que indica qué usuario es dueño de una entidad dentro del sistema.
+
+Cada producto tiene un propietario asociado. El usuario que crea el producto se convierte en su owner.
+
+## ¿Por qué no es seguro recibir userId en CreateProductDto?
+
+Básicamente porque el cliente podría manipular la petición y asignar el producto a otro propietario
+
+## ¿Cuál es la diferencia entre autorización por rol y autorización por ownership?
+
+La autorización por rol decide si un usuario puede realizar una operación según los roles asignados. Mientras que la autorización por ownership verifica si el usuario autenticado es propietario del recurso especifico que intenta modificar
+
+# 14_refresh_tokens
+
+## Capturas
+
+### Login con refresh token
+
+![Login con refresh token](/assets/14_login-con-refresh-token.png)
+
+### Refresh exitoso
+
+![Refresh exitoso](/assets/14_refresh-con-refresh-token.png)
+
+### Logout
+
+![Logout](/assets/14_Captura-logout.png)
+
+### Refresh después de logout
+
+![Refresh después de logout](/assets/14_refresh-despues-de-logout.png)
+
+## ¿Cuál es la diferencia entre access token y refresh token?
+
+El access token es de corta duración y es utilizado para acceder a los recursos que están protegidos. Mientras que refresh token tiene una duración mayor y es utilizado para solicitar un nuevo access token cuando el anterior ya haya expirado.
+
+## ¿Por qué el refresh token no debe usarse en Authorization: Bearer?
+
+Porque es una credencial para obtener nuevo Access Token. No representa ningún permiso de acceso a la API
+
+## ¿Qué significa rotar un refresh token?
+
+Significa en emitir un nuevo Refresh Token para renovar la sesión. Mientras que el Refresh Token anterior queda revocado y deja de ser válido.
 
 # 15 Documentación de Endpoints con Swagger, OpenAPI y Seguridad JWT
 
