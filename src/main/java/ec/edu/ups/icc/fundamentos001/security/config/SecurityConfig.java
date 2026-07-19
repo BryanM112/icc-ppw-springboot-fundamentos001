@@ -89,6 +89,15 @@ public SecurityConfig(UserDetailsServiceImpl userDetailsService,
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/status/**").permitAll()
                 .requestMatchers("/actuator/**").permitAll()
+                .requestMatchers(
+
+                    "/swagger-ui/**",
+                    "/swagger-ui.html",
+                    "/v3/api-docs/**"
+                ).permitAll()
+                .requestMatchers("/actuator/health").permitAll()
+                
+                
                 
                 // Todos los demás endpoints requieren autenticación
                 .anyRequest().authenticated()

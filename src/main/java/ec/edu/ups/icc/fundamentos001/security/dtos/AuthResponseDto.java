@@ -21,22 +21,31 @@ public class AuthResponseDto {
 
     private Set<String> roles;
 
+    private String refreshToken;
+
     public AuthResponseDto() {
     }
 
+    
+
     public AuthResponseDto(
-            String token,
-            Long userId,
-            String name,
-            String email,
-            Set<String> roles
-    ) {
+        String token,
+        String refreshToken,
+        Long userId,
+        String name,
+        String email,
+        Set<String> roles
+    ){
         this.token = token;
+        this.refreshToken = refreshToken;
         this.userId = userId;
         this.name = name;
         this.email = email;
         this.roles = roles;
+        
     }
+
+
 
     public String getToken() {
         return token;
@@ -84,6 +93,18 @@ public class AuthResponseDto {
 
     public void setRoles(Set<String> roles) {
         this.roles = roles;
+    }
+
+
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 
     

@@ -25,17 +25,27 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
+import ec.edu.ups.icc.fundamentos001.security.config.OpenApiConfig;
 import ec.edu.ups.icc.fundamentos001.security.services.UserDetailsImpl;
-
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import ec.edu.ups.icc.fundamentos001.core.dto.PaginationDto;
 
 import jakarta.validation.Valid;
 
 
 
+
 @RestController
 @RequestMapping("/products")
+@Tag(
+    name = "Productos",
+    description = "Operaciones para consultar, crear, modificar y eliminar productos"
+)
+@SecurityRequirement(name = OpenApiConfig.SECURITY_SCHEME_NAME)
 public class ProductController {
 
     private final ProductService service;
@@ -43,18 +53,71 @@ public class ProductController {
     public ProductController(ProductService service) {
         this.service = service;
     }
-
+        @Operation(
+        summary = "Obtener todos los productos",
+        description = "Busca todoso los productos existentes"
+    )
+    @ApiResponses({
+        @ApiResponse(
+            responseCode = "200",
+            description = "Producto encontrado correctamente"
+        ),
+        @ApiResponse(
+            responseCode = "401",
+            description = "No existe un token válido"
+        ),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Producto no encontrado"
+        )
+    })
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public List<ProductResponseDto> findAll() {
         return service.findAll();
     }
 
+    @Operation(
+        summary = "Obtener producto por ID",
+        description = "Busca un único producto utilizando su identificador"
+    )
+    @ApiResponses({
+        @ApiResponse(
+            responseCode = "200",
+            description = "Producto encontrado correctamente"
+        ),
+        @ApiResponse(
+            responseCode = "401",
+            description = "No existe un token válido"
+        ),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Producto no encontrado"
+        )
+    })
     @GetMapping("/{id}")
     public ProductResponseDto findOne(@PathVariable Long id) {
         return service.findOne(id);
     }
 
+        @Operation(
+        summary = "Crear",
+        description = "Crea un producto"
+    )
+    @ApiResponses({
+        @ApiResponse(
+            responseCode = "200",
+            description = "Producto creado correctamente"
+        ),
+        @ApiResponse(
+            responseCode = "401",
+            description = "No existe un token válido"
+        ),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Producto no encontrado"
+        )
+    })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProductResponseDto create(
@@ -64,6 +127,24 @@ public class ProductController {
         return service.create(dto, currentUser);
     }
 
+@Operation(
+        summary = "Actualizar",
+        description = "Actualiza todo un producto"
+    )
+    @ApiResponses({
+        @ApiResponse(
+            responseCode = "200",
+            description = "Producto actualizado correctamente"
+        ),
+        @ApiResponse(
+            responseCode = "401",
+            description = "No existe un token válido"
+        ),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Producto no encontrado"
+        )
+    })
     @PutMapping("/{id}")
     public ProductResponseDto update(
             @PathVariable Long id,
@@ -73,6 +154,24 @@ public class ProductController {
         return service.update(id, dto, currentUser);
     }
 
+    @Operation(
+        summary = "Actualizar parcialmente",
+        description = "Actualiza uno o varios campos de un producto"
+    )
+    @ApiResponses({
+        @ApiResponse(
+            responseCode = "200",
+            description = "Producto actualizado correctamente"
+        ),
+        @ApiResponse(
+            responseCode = "401",
+            description = "No existe un token válido"
+        ),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Producto no encontrado"
+        )
+    })
     @PatchMapping("/{id}")
     public ProductResponseDto partialUpdate(
          @PathVariable Long id,
@@ -82,6 +181,24 @@ public class ProductController {
         return service.partialUpdate(id, dto, currentUser);
     }
 
+        @Operation(
+        summary = "Eliminar producto por ID",
+        description = "Elimina el producto utilizando su identificador"
+    )
+    @ApiResponses({
+        @ApiResponse(
+            responseCode = "200",
+            description = "Producto encontrado correctamente"
+        ),
+        @ApiResponse(
+            responseCode = "401",
+            description = "No existe un token válido"
+        ),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Producto no encontrado"
+        )
+    })
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(
@@ -99,6 +216,24 @@ public class ProductController {
      *
      * GET /products/user/{userId}
      */
+    @Operation(
+        summary = "Buscar por id",
+        description = "buscar productos por id de usuario"
+    )
+    @ApiResponses({
+        @ApiResponse(
+            responseCode = "200",
+            description = "Producto encontrado correctamente"
+        ),
+        @ApiResponse(
+            responseCode = "401",
+            description = "No existe un token válido"
+        ),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Producto no encontrado"
+        )
+    })
     @GetMapping("/user/{userId}")
     public List<ProductResponseDto> findByUserId(@PathVariable Long userId) {
         return service.findByUserId(userId);
@@ -109,7 +244,27 @@ public class ProductController {
  *
  * GET /api/products/page
  * GET /api/products/page?page=0&size=5
+ * 
  */
+
+    @Operation(
+    summary = "Listar productos paginados",
+    description = "Devuelve una página de productos activos."
+)
+@ApiResponses({
+    @ApiResponse(
+        responseCode = "200",
+        description = "Página obtenida correctamente"
+    ),
+    @ApiResponse(
+        responseCode = "400",
+        description = "Parámetros de paginación inválidos"
+    ),
+    @ApiResponse(
+        responseCode = "401",
+        description = "Usuario no autenticado"
+    )
+})
     @GetMapping("/page")
     public Page<ProductResponseDto> findAllPage(
             @Valid @ModelAttribute PaginationDto pagination
@@ -123,6 +278,24 @@ public class ProductController {
  * GET /api/products/slice
  * GET /api/products/slice?page=0&size=5
  */
+    @Operation(
+    summary = "Listar productos con slice",
+    description = "Devuelve una página de productos activos"
+)
+@ApiResponses({
+    @ApiResponse(
+        responseCode = "200",
+        description = "Página obtenida correctamente"
+    ),
+    @ApiResponse(
+        responseCode = "400",
+        description = "Parámetros de paginación inválidos"
+    ),
+    @ApiResponse(
+        responseCode = "401",
+        description = "Usuario no autenticado"
+    )
+})
 @GetMapping("/slice")
 public Slice<ProductResponseDto> findAllSlice(
         @Valid @ModelAttribute PaginationDto pagination,

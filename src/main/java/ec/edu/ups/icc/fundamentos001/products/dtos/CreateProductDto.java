@@ -2,6 +2,7 @@ package ec.edu.ups.icc.fundamentos001.products.dtos;
 
 import java.util.Set;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -9,16 +10,33 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+@Schema(
+    name = "CreateProductDto",
+    description = "Datos necesarios para registrar un nuevo producto."
+)
 public class CreateProductDto {
 
+
+    @Schema(
+        name = "Nombre completo del usuario.",
+        description = "Juan Pérez"
+    )
     @NotBlank(message = "El nombre es obligatorio")
     @Size(min = 3, max = 150, message = "El nombre debe tener entre 3 y 150 caracteres")
     private String name;
 
+    @Schema(
+        name = "Precio del producto.",
+        description = "99.99"
+    )
     @NotNull(message = "El precio es obligatorio")
     @DecimalMin(value = "0.0", inclusive = true, message = "El precio no puede ser negativo")
     private Double price;
 
+    @Schema(
+        name = "Stock disponible para producto",
+        description = "20"
+    )
     @NotNull(message = "El stock es obligatorio")
     @Min(value = 0, message = "El stock no puede ser negativo")
     private Integer stock;
@@ -27,6 +45,10 @@ public class CreateProductDto {
     //private Long userId;
 
     //@NotNull(message = "El ID de la categoría es obligatorio")
+    @Schema(
+        name = "Id de la categoría, mínimo uno.",
+        description = "[1,6]"
+    )
     @NotEmpty(message = "Debe seleccionar al menos una categoría")
     private Set<Long> categoryIds;
 

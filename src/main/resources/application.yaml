@@ -5,9 +5,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/devdb
-    username: ups
-    password: ups123
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/devdb}
+    username: ${DB_USERNAME:ups}
+    password: ${DB_PASSWORD:ups123}
 
   jpa:
     hibernate:

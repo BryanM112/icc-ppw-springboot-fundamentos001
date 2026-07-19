@@ -64,6 +64,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(
                         "Usuario no encontrado con email: " + email));
 
+                        
+
         /**
          * 2. Convertir UserEntity → UserDetailsImpl
          * 
