@@ -31,7 +31,24 @@ public class AuthController {
      * POST /auth/login
      * 
      */
-    
+    @Operation(
+        summary = "Ingresar con usuario",
+        description = "Autentica un usuario mediante correo electrónico y contraseña, devolviendo un token JWT si las credenciales son válidas."
+    )
+    @ApiResponses(value = {
+       @ApiResponse(
+          responseCode = "200",
+          description = "Inicio de sesión exitoso"
+      ),
+     @ApiResponse(
+          responseCode = "400",
+           description = "Solicitud inválida. Datos de entrada incorrectos o incompletos."
+       ),
+      @ApiResponse(
+          responseCode = "401",
+          description = "Credenciales inválidas"
+      )
+    })
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDto> login(@Valid @RequestBody LoginRequestDto loginRequest) {
         // @Valid valida anotaciones en LoginRequestDto (email, password requeridos)

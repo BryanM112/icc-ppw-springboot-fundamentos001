@@ -231,10 +231,91 @@ Porque si la paginación se aplica después de traer los datos en memoria, el se
 
 
 
+# 15 Documentación de Endpoints con Swagger, OpenAPI y Seguridad JWT
+
+## Capturas
+
+### Captura de Swagger UI cargado
+
+![Swagger UI cargado](/assets/15-Swagger-Ui-cargado.png)
+
+### Captura del JSON OpenAPI
+
+![JSON OpenAPI](/assets/15-Json-OpenApi.png)
+
+### Captura de AuthController documentado
+
+![AuthController documentado](/assets/15-AuthController-Documentado.png)
+
+### Captura del botón Authorize
+
+![botón Authorize](/assets/15-boton-authorize.png)
+
+### Captura de endpoint protegido sin token
+
+![endpoint protegido sin token](/assets/15-endpoint-protegido-sin-token.png)
+
+### Captura de endpoint protegido con token desde Swagger
+
+![endpoint protegido con token](/assets/15-endpoint-protegido-con-tokekn.png)
+
+### Captura de endpoint ADMIN con usuario normal
+
+![endpoint ADMIN con usuario normal](/assets/15-endpoint-ADMIN-con-usuario-normal.png)
+
+### Captura de endpoint ADMIN con usuario administrador
+
+![endpoint ADMIN con usuario administrador](/assets/15-endpoint-ADMIN-con-usuario-administrador.png)
+
+## Explicación breve
+
+### ¿Cuál es la diferencia entre Swagger UI y OpenAPI?
+
+OpenAPI es la especificación que describe una API REST mediante un documento estructurado.
+
+Mientras que Swagger UI es la interfaz web que utiliza OpenAPI para mostrar la documentación de forma visual.
+
+### ¿Por qué Swagger puede ser público pero los endpoints seguir protegidos?
+
+Swagger solo muestra la documentación del API. La protección de endpoints ya depende de la configuración de seguridad de la aplicación. Entonces cualquier usuario podrá acceder a Swagger pero los endpoints seguirán requiriendo de autenticación porque así está configurado
+
+### ¿Cómo se configura Swagger para enviar un JWT en Authorization: Bearer?
+
+Se define un esquema de seguridad de tipo HTTP Bearer en la configuración de OpenAPI. Después el usuario ingresa un JWT válido mediante un botón Authorize. Swagger agrega automáticamente el encabezado.
 
 
+# 16_Docker_Ubuntu_Server
+
+## Capturas
+
+###  docker ps de Ubuntu Server mostrando ambos contenedores en ejecución.
+
+![Docker ps de ubuntu server](/assets/16-Docker%20-ps-Ubuntu.png)
+
+### curl de /api/actuator/health desde Ubuntu Server.
+
+![Curl de /api/actuator/health desde Ubuntu desktop](/assets/16-actuator-health-ubuntu-desktop.png)
+
+### curl de /api/actuator/health desde la máquina anfitriona.
+
+![Curl de /api/actuator/health desde la máquina anfitriona](/assets/16-acutator-health-maquina-anfitriona.png)
+
+### Explicación de la conexión a PostgreSQL externo o evidencia de fallback utilizado.
+
+Se utilizó PostgreSQL ejecutándose en la máquina anfitriona, mientras que Spring Boot se ejecutaba en un contenedor Docker dentro de Ubuntu Desktop
+
+La comunicación se realizó con la dirección IP de la máquina anfitriona:
+jdbc:postgresql://192.168.56.1:5432/devdb
+Para evitar almacenar información sensible o código delicado, las credenciales utilizadas fueron suministradas mediante variables de entorno definidas en .env.ubuntu
+
+Conectividad utilizando Cliente PostgreSQL
+
+![Conectividad utilizando cliente PostgreSQL](/assets/16-conectividad-utilizando-cliente-PostgreSQL.png)
 
 
+### login desde la máquina anfitriona con Bruno o Postman.
+
+![Login desde la máquina anfitriona con Bruno](/assets/16-consumo-login-desde-máquina-anfitriona-con-Bruno.png)
 
 
 
